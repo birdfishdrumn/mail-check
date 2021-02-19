@@ -9,6 +9,7 @@
     /* listStyle: "none", */
     flex-flow: row;
     color: gray;
+    list-style: none;
     cursor: pointer;
 }
 
