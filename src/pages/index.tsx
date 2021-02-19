@@ -4,78 +4,46 @@ import { db,auth } from "../firebase/firebase"
 import React, { useEffect, useState } from "react"
 import {Reserve} from "../types/reserveData"
 import Layout from "../components/Layout";
-import ReserveList from "../components/ReserveList"
+import ReserveList from "../components/TrueReserve"
 import FloatingAction from "../components/FloatinAction/FloatingAction";
 import TestReserve from "../components/TestReserve";
+import TrueReserve from "../components/TrueReserve"
 import { useRouter } from 'next/router'
+import Tooltip from '@material-ui/core/Tooltip';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+
 export default function Home() {
 
 
+   const [active,setActive] = useState(false)
 
+  // const openActive = () => {
+  //   setActive(true)
+  // }
 
-  const [data, setData] = useState<Reserve[]>([])
-  useEffect(() => {
-    db.collection("reservation").orderBy("published_at","desc").onSnapshot((snapshot) => {
-      const list =[]
-      snapshot.forEach((docs) => {
-        list.push(docs.data())
-
-      })
-      console.log(list)
-      setData(list)
-   })
-  }, [])
-
-
-
-
-  console.log(data)
-
-const props = [
-  { id: 1, name: 'Fizz'},
-  { id: 2, name: 'Buzz'},
-  { id: 3, name: 'FizzBuzz'}
-];
-
-  const [, , { name }] = props;
-
-console.log(name); // "FizzBuzz"
+  //  const closeActive = () => {
+  //   setActive(true)
+  // }
 
   return (
     <div>
-      <FloatingAction/>
-      <TestReserve data ={data as any}/>
+              <ul  className="icon_flex">
+
+        <Tooltip title="未予約" interactive>
+          <li className={active ? "nonActive" : "active"}  onClick={() =>setActive(false) }><CheckBoxOutlineBlankIcon fontSize="large" /><p>未予約</p></li>
+        </Tooltip>
+        <Tooltip title="予約済" interactive>
+          <li className={active ? "active" : "nonActive"} onClick={() => setActive(true)} ><CheckBoxIcon fontSize="large" /><p>予約済</p></li>
+
+        </Tooltip>
+
+     </ul>
+      <FloatingAction />
+      {active ?  <TrueReserve/> :  <TestReserve />}
+
+
     </div>
   )
 }
-
-
-
-//  const listenAuthState = () => {
-//   return async (dispatch) => {
-//     return auth.onAuthStateChanged(user => {
-//       if (user) {
-//  const uid = user.uid
-
-//           db.collection("users").doc(uid).get()
-//             .then(snapshot => {
-//               const data:any= snapshot.data()
-//              console.log(data)
-//               dispatch(login({
-//                 isSignedIn: true,
-//                 role: data.role,
-//                 uid: uid,
-//                 email: data.email,
-//                 username: data.username,
-//                 avatar: data.avatar
-//               }))
-
-//             })
-
-//       } else {
-//         dispatch(push("/signin"))
-//       }
-//     })
-
-//   }
-// }

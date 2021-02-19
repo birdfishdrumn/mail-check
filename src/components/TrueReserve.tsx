@@ -73,7 +73,7 @@ const TestReserve: React.FC = () => {
 
     const [data, setData] = useState<Reserve[]>([])
   useEffect(() => {
-    db.collection("reservation").where("check","==",false).orderBy("published_at","desc").onSnapshot((snapshot) => {
+    db.collection("reservation").where("check","==",true).orderBy("published_at","desc").onSnapshot((snapshot) => {
       const list =[]
       snapshot.forEach((docs) => {
         list.push(docs.data())
@@ -109,10 +109,6 @@ const TestReserve: React.FC = () => {
     setDeleteId(id)
  }
 
-  // const messageOpen = (message: string) => {
-  //   setOpen
-  // }
-
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
@@ -120,7 +116,7 @@ const TestReserve: React.FC = () => {
     <MaterialTable
       icons={tableIcons}
 
-      title="未予約"
+      title="完了した予約"
         columns={[
         //   {
         //   title:"予約",field:"check"
@@ -208,29 +204,14 @@ const TestReserve: React.FC = () => {
           tooltip: 'Delete User',
           onClick: (event, rowData: Reserve) => { DeleteOpen(rowData.id) }
         }),
-  rowData => rowData.message &&　({
+         rowData => rowData.message &&　({
            icon: () =>   < Message />,
           tooltip: 'メッセージがあります',
           onClick: (event, rowData: Reserve) => alert(rowData.message)
         }),
       ]}
 
-      // detailPanel={
 
-      //   rowData => {
-      //     return (
-      //       <div
-      //         style={{
-      //           fontSize: "1rem",
-      //           textAlign: 'center',
-      //           padding:"40px"
-      //         }}
-      //       >
-      //         {rowData.message ? rowData.message : "メッセージはありません"}
-      //       </div>
-
-      //     )
-      //   }
       // }
       options={{
         actionsColumnIndex: -1,

@@ -25,6 +25,7 @@ import { People } from "@material-ui/icons";
 import Select from '@material-ui/core/Select';
 import { Reserve } from "../../types/reserveData";
 import Snackbar from "../Ui/Snackbar"
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -58,7 +59,8 @@ const Reservation:React.FC<Props> = ({id}) => {
   const [time, setTime] = useState("")
   const [message, setMessage] = useState("");
   const [content, setContent] = useState("");
-  const [snackOpen,setSnackOpen] = useState(false)
+  const [snackOpen, setSnackOpen] = useState(false);
+  const [check, setCheck] = useState(false)
   const dt = new Date()
   // const week = dt.setDate(dt.getDate() + 7)
   const minDate =dt.setDate(dt.getDate() + 3)
@@ -121,6 +123,12 @@ event.target.value,
 event.target.value,
     );
   };
+
+  const handleCheck = (e) => {
+    setCheck(
+      !check
+    )
+  }
   // データ登録の関数
       const timestamp = firebase.firestore.Timestamp.now();
   const ref = db.collection("reservation").doc()
@@ -137,8 +145,9 @@ event.target.value,
           setContent(data.content)
           setPeople(data.people)
           setTime(data.time)
+          setMessage(data.message)
           setSelectedDate(data.selectedDate.toDate())
-
+          setCheck(data.check)
         })
       }
     }, [])
@@ -155,7 +164,7 @@ event.target.value,
             time: time,
             message: message,
             people: people,
-            check: false,
+            check: check,
       published_at: timestamp,
        id: id
     }, {
@@ -192,6 +201,10 @@ if (time === "") return true;
         <input type="hidden" name="form-name" value="contact" />
         <input type="hidden" name="bot-field" />
 
+          <FormControlLabel　className="mb-6 center"
+        control={<Checkbox checked={check} onChange={handleCheck} name="checkedA" />}
+        label="予約の状況"
+        />
         <TextInput
           id={name}
           fullWidth={true}
@@ -211,7 +224,7 @@ if (time === "") return true;
           fullWidth={true}
           label={"メールアドレス"}
           multiline={false}
-          required={true}
+          required={false}
           onChange={inputEmail}
           rows={1}
           variant="outlined"
@@ -225,7 +238,7 @@ if (time === "") return true;
           fullWidth={true}
           label={"電話番号"}
           multiline={false}
-          required={true}
+          required={false}
           onChange={inputPhone}
           rows={1}
           variant="outlined"
@@ -338,7 +351,7 @@ if (time === "") return true;
             color="primary"
             disabled={canSubmit()}
           >
-            送信
+            予約の登録・編集
               </Button>
         </div>
       </form>

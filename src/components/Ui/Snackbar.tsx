@@ -38,7 +38,7 @@ export default function CustomizedSnackbars({snackOpen,setSnackOpen}) {
       {/* <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button> */}
-      <Snackbar open={snackOpen} autoHideDuration={6000} >
+      <Snackbar open={snackOpen} autoHideDuration={6000}　 anchorOrigin={{ vertical:"top", horizontal:"center" }} >
         <Alert severity="success">
            予約を編集・登録しました！
         </Alert>

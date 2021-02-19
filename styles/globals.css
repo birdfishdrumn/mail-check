@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.icon_flex {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    /* color: "grey", */
+    /* listStyle: "none", */
+    flex-flow: row;
+    color: gray;
+    cursor: pointer;
+}
+
+.icon_flex li {
+    margin: 20px;
+}
+
+.active {
+    color: #FF3366 !important;
+}
+
+.nonActive {
+    color: gray;
+}
+
+
+/* .MuiSvgIcon-root {
+    width: 0.8rem !important;
+} */
