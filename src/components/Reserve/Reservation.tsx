@@ -243,33 +243,25 @@ if (time === "") return true;
           rows={1}
           variant="outlined"
           value={phone}
-          type={"tell"}
-          name="tell"
+          type={"tel"}
+          name="tel"
         />
         <div className="space-s" />
 
         <div className="space-s" />
-            <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="age-native-simple">人数</InputLabel>
-        <Select
-          native
+            <TextInput
+          id={phone}
+          fullWidth={true}
+          label={"人数"}
+          multiline={false}
+          required={true}
+          onChange={inputPeople}
+          rows={1}
+          variant="outlined"
           value={people}
-          onChange={selectPeople}
-          inputProps={{
-            name: 'age',
-            id: 'age-native-simple',
-          }}
-        >
-          <option aria-label="None" value="" />
-            <option value={"1"}>1</option>
-             <option value={"2"}>2</option>
-            <option value={"3"}>3</option>
-            <option value={"4"}>4</option>
-            <option value={"5"}>5</option>
-             <option value={"6"}>6</option>
-
-        </Select>
-        </FormControl>
+          type={"number"}
+          name="people"
+        />
                 <div className="space-m" />
 
 
