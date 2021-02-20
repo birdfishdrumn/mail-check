@@ -65,7 +65,7 @@ const Reservation:React.FC<Props> = ({id}) => {
   // const week = dt.setDate(dt.getDate() + 7)
   const minDate =dt.setDate(dt.getDate() + 3)
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = useState(dt.setDate(dt.getDate()));
+  const [selectedDate, setSelectedDate] = useState(dt);
 
 console.log(new Date())
 
