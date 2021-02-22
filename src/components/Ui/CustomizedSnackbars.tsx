@@ -16,8 +16,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
 }));
+interface Props {
+  snackOpen:boolean
+  setSnackOpen: React.Dispatch<React.SetStateAction<boolean>>
+  dl: any
+}
 
-export default function CustomizedSnackbars({snackOpen,setSnackOpen}) {
+
+const CustomizedSnackbars: React.FC<Props> = ({ snackOpen, setSnackOpen, dl})=> {
   const classes = useStyles();
   // const [open, setOpen] = React.useState(false);
 
@@ -40,10 +46,12 @@ export default function CustomizedSnackbars({snackOpen,setSnackOpen}) {
       </Button> */}
       <Snackbar open={snackOpen} autoHideDuration={6000}　 anchorOrigin={{ vertical:"top", horizontal:"center" }} >
         <Alert severity="success">
-           予約を編集・登録しました！
+          {dl==="true" ? "削除しました" : "予約を編集・登録しました！"}
         </Alert>
       </Snackbar>
       {/* <Alert severity="success">This is a success message!</Alert> */}
     </div>
   );
 }
+
+export default CustomizedSnackbars

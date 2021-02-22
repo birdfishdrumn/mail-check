@@ -1,7 +1,9 @@
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from 'next/router'
-import {auth} from "../firebase/firebase"
+import { auth } from "../firebase/firebase"
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 const Layout = (props) => {
   const { title, children } = props
   const siteTitle = "予約管理"
@@ -15,10 +17,12 @@ const Layout = (props) => {
       </Head>
       <header className="flex">
         <h1 className="site-title">
-          <Link href="/">
-            <a>{siteTitle}</a>
+           <CheckBoxIcon/><Link href="/">
+           <a>{siteTitle}</a>
           </Link>
-
+          <ContactMailIcon/><Link href="/contact">
+            <a>問い合わせ</a>
+          </Link>
         </h1>
           <button className="ml-12" onClick={()=>auth.signOut()}>Logout</button>
       </header>
@@ -49,6 +53,8 @@ const Layout = (props) => {
         .site-title a {
           color: inherit;
           text-decoration: none;
+          margin:10px;
+          font-size:1.1rem;
         }
         footer {
           margin-top: 4em;

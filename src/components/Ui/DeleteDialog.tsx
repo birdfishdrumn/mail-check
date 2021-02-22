@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { db } from "../../firebase/firebase";
-
+import CustomizedSnackbars from "./CustomizedSnackbars"
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -62,47 +62,55 @@ interface PROPS {
 
   id: string;
   uid?: string;
-  handleClose: ()=>void
+  handleClose: () => void
+  contact?: string
+  name?: string
 }
 
 
 
  const  CustomDialog:React.FC<PROPS> = (props) =>{
   const [open, setOpen] =useState(true);
-
+  const [snackOpen, setSnackOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
-   const deletePost = (id: string) => {
-  return   db.collection("reservation").doc(id).delete()
-
-
-
-   }
    console.log(props.id)
+   const id = props.id
+   const name = props.name
+   const collection = props.contact === "true" ? "contacts" : "reservation";
+   const deletePost = (id: string) => {
+     return db.collection(collection).doc(id).delete().then(() => {
+       setSnackOpen(true)
+
+
+     })
+   }
+  //  console.log(props.id)
 
   return (
     <div>
 
       <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-          予約のキャンセル
+           {name}さんの削除
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
+
            削除された予約は復元できません。よろしいですか？
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button  onClick={()=>deletePost(props.id)} color="primary">
+          <Button  onClick={()=>deletePost(id)} color="primary">
             削除する
           </Button>
 </DialogActions>
       </Dialog>
+      <CustomizedSnackbars snackOpen={snackOpen} dl="true" setSnackOpen={setSnackOpen}/>
     </div>
   );
 }

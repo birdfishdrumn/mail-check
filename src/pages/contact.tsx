@@ -8,15 +8,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DeleteDialog from "./Ui/DeleteDialog";
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import DeleteDialog from "../components/Ui/DeleteDialog";
+
 import { useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import Reservation from './Reserve/Reservation';
-import { Reserve } from "../types/reserveData";
+
+import { Contact } from "../types/contactData";
 import Checkbox from '@material-ui/core/Checkbox';
 import {db} from "../firebase/firebase"
 
@@ -69,11 +67,11 @@ const tableIcons = {
 //  data: Reserve
 // }
 
-const TestReserve: React.FC = () => {
+const contact: React.FC = () => {
 
-    const [data, setData] = useState<Reserve[]>([])
+    const [data, setData] = useState<Contact[]>([])
   useEffect(() => {
-    db.collection("reservation").where("check","==",true).orderBy("published_at","desc").onSnapshot((snapshot) => {
+    db.collection("contacts").orderBy("published_at","desc").onSnapshot((snapshot) => {
       const list =[]
       snapshot.forEach((docs) => {
         list.push(docs.data())
@@ -88,22 +86,20 @@ const TestReserve: React.FC = () => {
 
     const classes = useStyles();
    const [openModal,setOpenModal] = useState<boolean>(false)
-    const [open, setOpen] = useState<boolean>(false);
-  const [props, setProps] = useState<string>("")
-  const [name,setName]=useState<string>("")
+const [name,setName] = useState("")
   const [deleteId,setDeleteId] = useState<string>("")
   const DeleteClose = useCallback(() => {
      setOpenModal(false)
 
   },[setOpenModal])
 
-  const handleClickOpen = (id: string) => {
-    setOpen(true);
-    setProps(id)
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClickOpen = (id: string) => {
+  //   setOpen(true);
+  //   setProps(id)
+  // };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const DeleteOpen = (id: string,name:string) => {
     setOpenModal(true)
@@ -112,13 +108,13 @@ const TestReserve: React.FC = () => {
  }
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <div>
     <MaterialTable
       icons={tableIcons}
 
-      title="完了した予約"
+      title="お問い合わせ"
         columns={[
         //   {
         //   title:"予約",field:"check"
@@ -126,46 +122,13 @@ const TestReserve: React.FC = () => {
         {
           title: 'お名前', field: 'name',
           cellStyle: {
-            width: 400,
+
             fontSize: "0.9rem"
           },
           headerStyle: {
-            width: "400px",
+
           }
           },
-
-
-        {
-          title: '体験日時', field: 'selectedDate', cellStyle: {
-            fontSize: "0.9rem"
-          }
-        },
-        {
-          title: '時間', field: 'time', cellStyle: {
-            fontSize: "0.9rem"
-          }
-        },
-        {
-          title: '人数',
-          field: 'people',
-          cellStyle: {
-            fontSize: "0.9rem"
-          }
-
-        },
-        {
-          title: '内容',
-          field: 'content',
-
-
-          cellStyle: {
-            width: "400px",
-            fontSize: "0.9rem"
-          },
-          headerStyle: {
-            width: "400px",
-          }
-        },
         {
           title: 'email',
           field: 'email',
@@ -173,20 +136,34 @@ const TestReserve: React.FC = () => {
             fontSize: "0.9rem"
           }
 
-        },
-        {
-          title: '電話',
-          field: 'phone',
+          },
+           {
+          title: '件名',
+          field: 'subject',
           cellStyle: {
             fontSize: "0.9rem"
           }
+
+          },
+              {
+          title: '内容',
+          field: 'message',
+          cellStyle: {
+            fontSize: "0.9rem",
+            width: "500px"
+          },
+             headerStyle: {
+ width: "500px"
+          }
+
         },
+
       ]}
 
 
       data={(data as any).map((d, index) => (
 
-        { id: d.id, selectedDate: d.selectedDate.toDate().toLocaleDateString(), time: d.time, name: d.name, people: d.people, content: d.content, email: d.email, phone: d.phone, message: d.message }
+        { id: d.id,  name: d.name, email: d.email, subject:d.subject, message: d.message }
       ))}
 
 
@@ -198,21 +175,12 @@ const TestReserve: React.FC = () => {
 
 
       actions={[
-        {
-          icon:  () => <Edit />,
-          tooltip: "edit",
-          onClick: (event, rowData: Reserve) =>  {handleClickOpen(rowData.id)}
-        },
         rowData => ({
           icon: () => <DeleteOutline />,
           tooltip: 'Delete User',
-          onClick: (event, rowData: Reserve) => { DeleteOpen(rowData.id,rowData.name) }
+          onClick: (event, rowData: Contact) => { DeleteOpen(rowData.id,rowData.name) }
         }),
-         rowData => rowData.message &&　({
-           icon: () =>   < Message />,
-          tooltip: 'メッセージがあります',
-          onClick: (event, rowData: Reserve) => alert(rowData.message)
-        }),
+
       ]}
 
 
@@ -225,24 +193,11 @@ const TestReserve: React.FC = () => {
       }}
       />
 
-              <Dialog   fullScreen={fullScreen} open={open} className={classes.dialog} onClose={handleClose} aria-labelledby="form-dialog-title">
-          {/* <DialogTitle id="form-dialog-title" className="center">{title}</DialogTitle> */}
-          <DialogContent>
 
-          <Reservation id={props}/>
-
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            キャンセル
-          </Button>
-
-        </DialogActions>
-      </Dialog>
-      {openModal && <DeleteDialog name={name} handleClose={DeleteClose}   id={deleteId}/>}
+      {openModal && <DeleteDialog name={name} contact = "true" handleClose={DeleteClose}   id={deleteId}/>}
 
     </div>
 
   )
 }
-export default TestReserve
+export default contact

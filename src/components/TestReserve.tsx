@@ -72,23 +72,10 @@ const tableIcons = {
 const TestReserve: React.FC = () => {
 
     const [data, setData] = useState<Reserve[]>([])
-  useEffect(() => {
-    db.collection("reservation").where("check","==",false).orderBy("published_at","desc").onSnapshot((snapshot) => {
-      const list =[]
-      snapshot.forEach((docs) => {
-        list.push(docs.data())
-
-      })
-      console.log(list)
-      setData(list)
-   })
-  }, [])
-
-
-
     const classes = useStyles();
    const [openModal,setOpenModal] = useState<boolean>(false)
-    const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [name,setName] =useState<string>("")
   const [props, setProps] = useState<string>("")
   const [deleteId,setDeleteId] = useState<string>("")
   const DeleteClose = useCallback(() => {
@@ -104,10 +91,27 @@ const TestReserve: React.FC = () => {
     setOpen(false);
   };
 
-  const DeleteOpen = (id: string) => {
+  const DeleteOpen = (id: string,name:string) => {
     setOpenModal(true)
+    setName(name)
     setDeleteId(id)
- }
+  }
+
+
+    useEffect(() => {
+    db.collection("reservation").where("check","==",false).orderBy("published_at","desc").onSnapshot((snapshot) => {
+      const list =[]
+      snapshot.forEach((docs) => {
+        list.push(docs.data())
+
+      })
+      console.log(list)
+      setData(list)
+   })
+  }, [])
+
+
+
 
   // const messageOpen = (message: string) => {
   //   setOpen
@@ -206,7 +210,7 @@ const TestReserve: React.FC = () => {
         rowData => ({
           icon: () => <DeleteOutline />,
           tooltip: 'Delete User',
-          onClick: (event, rowData: Reserve) => { DeleteOpen(rowData.id) }
+          onClick: (event, rowData: Reserve) => { DeleteOpen(rowData.id,rowData.name) }
         }),
   rowData => rowData.message &&　({
            icon: () =>   < Message />,
@@ -254,7 +258,7 @@ const TestReserve: React.FC = () => {
 
         </DialogActions>
       </Dialog>
-         {openModal && <DeleteDialog  handleClose={DeleteClose}   id={deleteId}/>}
+      {openModal && <DeleteDialog name={name} handleClose={DeleteClose}   id={deleteId}/>}
 
     </div>
 

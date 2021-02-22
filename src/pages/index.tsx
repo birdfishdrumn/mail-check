@@ -1,14 +1,10 @@
-import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
-import { db,auth } from "../firebase/firebase"
+
 import React, { useEffect, useState } from "react"
-import {Reserve} from "../types/reserveData"
-import Layout from "../components/Layout";
-import ReserveList from "../components/TrueReserve"
+
 import FloatingAction from "../components/FloatinAction/FloatingAction";
 import TestReserve from "../components/TestReserve";
 import TrueReserve from "../components/TrueReserve"
-import { useRouter } from 'next/router'
+
 import Tooltip from '@material-ui/core/Tooltip';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';

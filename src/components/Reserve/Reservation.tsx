@@ -24,7 +24,7 @@ import { useRouter } from 'next/router'
 import { People } from "@material-ui/icons";
 import Select from '@material-ui/core/Select';
 import { Reserve } from "../../types/reserveData";
-import Snackbar from "../Ui/Snackbar"
+import CustomizedSnackbars from "../Ui/CustomizedSnackbars"
 import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
@@ -282,7 +282,7 @@ if (time === "") return true;
             <KeyboardDatePicker
               disablePast
               shouldDisableDate={disableMonday}
-              minDate={minDate}
+              // minDate={minDate}
 
           margin="normal"
           id="date-picker-dialog"
@@ -347,7 +347,7 @@ if (time === "") return true;
               </Button>
         </div>
       </form>
-      <Snackbar snackOpen={snackOpen} setSnackOpen={setSnackOpen}/>
+      <CustomizedSnackbars snackOpen={snackOpen} dl="false" setSnackOpen={setSnackOpen}/>
     </div>
   )
 }
