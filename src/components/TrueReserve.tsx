@@ -72,18 +72,9 @@ const tableIcons = {
 const TestReserve: React.FC = () => {
 
     const [data, setData] = useState<Reserve[]>([])
-  useEffect(() => {
-    db.collection("reservation").where("check","==",true).orderBy("published_at","desc").onSnapshot((snapshot) => {
-      const list =[]
-      snapshot.forEach((docs) => {
-        list.push(docs.data())
 
-      })
-      console.log(list)
-      setData(list)
-   })
-  }, [])
 
+ const [date,setDate] = useState<any>(null)
 
 
     const classes = useStyles();
@@ -110,6 +101,24 @@ const TestReserve: React.FC = () => {
     setName(name)
     setDeleteId(id)
  }
+
+
+  useEffect(() => {
+    db.collection("reservation").where("check","==",true).orderBy("published_at","desc").onSnapshot((snapshot) => {
+      const list = []
+
+      snapshot.forEach((docs) => {
+        const data = docs.data()
+        // const date = data.selectedDate
+        list.push(data)
+
+      })
+      console.log(list)
+      setData(list)
+      // setDate(date)
+   })
+  }, [])
+
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
